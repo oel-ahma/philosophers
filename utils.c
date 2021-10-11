@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: oel-ahma <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/10/11 16:27:21 by oel-ahma          #+#    #+#             */
+/*   Updated: 2021/10/11 16:31:35 by oel-ahma         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
 int	convert_nbr(const char *str, int i)
@@ -24,8 +36,8 @@ int	ft_atoi(const char *str)
 	i = 0;
 	signe = 1;
 	while ((str[i] != '\0') && ((str[i] == ' ') || (str[i] == '\t')
-				|| (str[i] == '\n') || (str[i] == '\v')
-				|| (str[i] == '\f') || (str[i] == '\r')))
+			|| (str[i] == '\n') || (str[i] == '\v')
+			|| (str[i] == '\f') || (str[i] == '\r')))
 		i++;
 	if (str[i] == '-')
 	{
@@ -58,24 +70,18 @@ void	ft_sleep(int how_long)
 	}
 }
 
-void print_status(t_philo *philo_data, char *str, int color)
+void	print_status(t_philo *philo_data, char *str)
 {
-    struct timeval tv;
-    long int time;
+	struct timeval	tv;
+	long int		time;
 
-    pthread_mutex_lock(&philo_data->mutex->print);
-    gettimeofday(&tv, NULL);
-    time = (tv.tv_sec - philo_data->start_time.tv_sec) * 1000 + (tv.tv_usec - philo_data->start_time.tv_usec) / 1000;
-    pthread_mutex_lock(&philo_data->mutex->someone_died);
-    if (philo_data->mutex->nobody_dead == 1)
-    {
-        if (color == 1)
-            printf(RED "IT's %ld : PHILO %d %s\n" reset, time, philo_data->id + 1, str);
-        if (color == 2)
-            printf(YEL "IT's %ld : PHILO %d %s\n" reset, time, philo_data->id + 1, str);
-        if (color == 0)
-            printf("IT's %ld : PHILO %d %s\n", time, philo_data->id + 1, str);
-    }
-    pthread_mutex_unlock(&philo_data->mutex->someone_died);
-    pthread_mutex_unlock(&philo_data->mutex->print);
+	pthread_mutex_lock(&philo_data->mutex->print);
+	gettimeofday(&tv, NULL);
+	time = (tv.tv_sec - philo_data->start_time.tv_sec) * 1000
+		+ (tv.tv_usec - philo_data->start_time.tv_usec) / 1000;
+	pthread_mutex_lock(&philo_data->mutex->someone_died);
+	if (philo_data->mutex->nobody_dead == 1)
+		printf("IT's %ld : PHILO %d %s\n", time, philo_data->id + 1, str);
+	pthread_mutex_unlock(&philo_data->mutex->someone_died);
+	pthread_mutex_unlock(&philo_data->mutex->print);
 }

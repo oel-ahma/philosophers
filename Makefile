@@ -14,7 +14,7 @@ NAME = philo
 
 CC = gcc
 
-FLAGS = -Wall -Werror -Wextra -I.
+FLAGS = -Wall -Werror -Wextra -fsanitize=address -I.
 
 SRCS = philo.c dinner_time.c utils.c
 
