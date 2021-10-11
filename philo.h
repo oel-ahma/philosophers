@@ -6,7 +6,7 @@
 /*   By: oel-ahma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/06 16:08:40 by oel-ahma          #+#    #+#             */
-/*   Updated: 2021/10/11 16:43:49 by oel-ahma         ###   ########.fr       */
+/*   Updated: 2021/10/11 18:10:23 by oel-ahma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ typedef struct s_mutex
 {
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	someone_died;
-	pthread_mutex_t	meals_services;
 	pthread_mutex_t	print;
+	pthread_mutex_t	meals_services;
 	int				nobody_dead;
 }				t_mutex;
 

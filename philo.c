@@ -6,7 +6,7 @@
 /*   By: oel-ahma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/06 16:05:09 by oel-ahma          #+#    #+#             */
-/*   Updated: 2021/10/11 16:57:02 by oel-ahma         ###   ########.fr       */
+/*   Updated: 2021/10/11 18:09:50 by oel-ahma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ int	philo_threads(int philo_nbr, t_philo *philo_data, pthread_t **philo)
 		pthread_mutex_destroy(&(philo_data->mutex->forks[i++]));
 	pthread_mutex_destroy(&philo_data->mutex->someone_died);
 	pthread_mutex_destroy(&philo_data->mutex->print);
+	pthread_mutex_destroy(&philo_data->is_eating);
+	pthread_mutex_destroy(&philo_data->mutex->meals_services);
 	free(*philo);
 	return (0);
 }
@@ -42,6 +44,8 @@ int	philo_threads(int philo_nbr, t_philo *philo_data, pthread_t **philo)
 void	get_values(t_philo **philo_data, struct timeval tv_start,
 		int i, char **av)
 {
+	if (pthread_mutex_init(&((*philo_data)[i].is_eating), NULL))
+		return ;
 	(*philo_data)[i].id = i;
 	(*philo_data)[i].start_time = tv_start;
 	(*philo_data)[i].last_meal = tv_start;
@@ -88,8 +92,12 @@ int	init_mutex(t_mutex *mutex, int philo_nbr)
 	mutex->forks = malloc(sizeof(pthread_mutex_t) * philo_nbr);
 	if (!mutex->forks)
 		return (1);
-	pthread_mutex_init(&mutex->someone_died, NULL);
-	pthread_mutex_init(&mutex->print, NULL);
+	if (pthread_mutex_init(&mutex->someone_died, NULL))
+		return (1);
+	if (pthread_mutex_init(&mutex->print, NULL))
+		return (1);
+	if (pthread_mutex_init(&mutex->meals_services, NULL))
+		return (1);
 	i = 0;
 	while (i < philo_nbr)
 	{

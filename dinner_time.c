@@ -47,10 +47,10 @@ int	life_is_taken(long int time, t_philo *philo_data)
 		pthread_mutex_unlock(&(philo_data->mutex->someone_died));
 		return (1);
 	}
-	pthread_mutex_lock(&(philo_data->mutex->meals_services));
+	pthread_mutex_lock(&philo_data->mutex->meals_services);
 	if (philo_data->meals_to_eat == 0)
 		return (1);
-	pthread_mutex_unlock(&(philo_data->mutex->meals_services));
+	pthread_mutex_unlock(&philo_data->mutex->meals_services);
 	return (0);
 }
 
@@ -90,6 +90,7 @@ void	*start_check(void *param)
 		pthread_mutex_unlock(&(philo_data->is_eating));
 	}
 	pthread_mutex_unlock(&(philo_data->is_eating));
+	pthread_mutex_unlock(&(philo_data->mutex->meals_services));
 	return (param);
 }
 
