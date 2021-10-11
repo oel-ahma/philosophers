@@ -6,7 +6,7 @@
 /*   By: oel-ahma <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/10/06 16:05:09 by oel-ahma          #+#    #+#             */
-/*   Updated: 2021/10/11 18:09:50 by oel-ahma         ###   ########.fr       */
+/*   Updated: 2021/10/11 18:51:34 by oel-ahma         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,11 @@ int	philo_threads(int philo_nbr, t_philo *philo_data, pthread_t **philo)
 	return (0);
 }
 
-void	get_values(t_philo **philo_data, struct timeval tv_start,
+int	get_values(t_philo **philo_data, struct timeval tv_start,
 		int i, char **av)
 {
 	if (pthread_mutex_init(&((*philo_data)[i].is_eating), NULL))
-		return ;
+		return (1);
 	(*philo_data)[i].id = i;
 	(*philo_data)[i].start_time = tv_start;
 	(*philo_data)[i].last_meal = tv_start;
@@ -54,6 +54,10 @@ void	get_values(t_philo **philo_data, struct timeval tv_start,
 	(*philo_data)[i].time_to_sleep = ft_atoi(av[4]);
 	(*philo_data)[i].optional_param = 0;
 	(*philo_data)[i].meals_to_eat = -1;
+	if ((*philo_data)[i].time_to_die <= 0 || (*philo_data)[i].time_to_eat <= 0
+			|| (*philo_data)[i].time_to_sleep <= 0)
+		return (printf("Error Invalid Arguments!\n"));
+	return (0);
 }
 
 int	init_prog(int philo_nbr, char **av, t_philo **philo_data, t_mutex *mutex)
@@ -70,7 +74,8 @@ int	init_prog(int philo_nbr, char **av, t_philo **philo_data, t_mutex *mutex)
 	{
 		(*philo_data)[i].id = i;
 		(*philo_data)[i].philo_nbr = philo_nbr;
-		get_values(philo_data, tv_start, i, av);
+		if (get_values(philo_data, tv_start, i, av))
+			return (2);
 		if (av[5])
 		{
 			(*philo_data)[i].optional_param = 1;
@@ -117,6 +122,8 @@ int	main(int ac, char **av)
 	if (ac < 5 || ac > 6)
 		return (printf("Error Invalid Arguments!\n"));
 	philo_nbr = ft_atoi(av[1]);
+	if (philo_nbr <= 0)
+		return (printf("Error Invalid Arguments!\n"));
 	if (init_mutex(&mutex, philo_nbr))
 		return (1);
 	if (init_prog(philo_nbr, av, &philo_data, &mutex))
