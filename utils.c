@@ -81,7 +81,7 @@ void	print_status(t_philo *philo_data, char *str)
 		+ (tv.tv_usec - philo_data->start_time.tv_usec) / 1000;
 	pthread_mutex_lock(&philo_data->mutex->someone_died);
 	if (philo_data->mutex->nobody_dead == 1)
-		printf("IT's %ld : PHILO %d %s\n", time, philo_data->id + 1, str);
+		printf("%ld\t %d %s\n", time, philo_data->id + 1, str);
 	pthread_mutex_unlock(&philo_data->mutex->someone_died);
 	pthread_mutex_unlock(&philo_data->mutex->print);
 }

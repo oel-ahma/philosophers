@@ -128,6 +128,7 @@ int	main(int ac, char **av)
 		return (1);
 	if (init_prog(philo_nbr, av, &philo_data, &mutex))
 	{
+		free(philo_data);
 		free(mutex.forks);
 		return (0);
 	}
